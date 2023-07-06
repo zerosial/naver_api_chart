@@ -1,9 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { useEffect } from "react";
+import logo from "./logo.svg";
+import { Counter } from "./features/counter/Counter";
+import "./App.css";
+import postData from "./features/api/postData";
 
 function App() {
+  useEffect(() => {
+    postData();
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
