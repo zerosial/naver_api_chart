@@ -1,5 +1,17 @@
 import { naverApi } from "./instance";
 
+type AgeRange = "10" | "20" | "30" | "40" | "50";
+
+interface PostDataProps {
+  startDate: string;
+  endDate: string;
+  timeUnit: string;
+  category: string;
+  keyword: string;
+  device: string;
+  gender: string;
+  ages: AgeRange[];
+}
 export default async function postData() {
   const body = {
     startDate: "2017-08-01",
