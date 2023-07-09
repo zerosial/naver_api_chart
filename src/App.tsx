@@ -1,59 +1,39 @@
-import { useEffect } from "react";
 import logo from "./logo.svg";
-import { Counter } from "./features/counter/Counter";
 import "./App.css";
-import postData from "./features/api/postData";
+import { useSelector, useDispatch } from "react-redux";
+import { searchAsync } from "./features/redux/searchAsyncSlice";
+import { AppDispatch } from "./app/store";
 
 function App() {
-  useEffect(() => {
-    postData();
-  }, []);
+  const dispatch = useDispatch<AppDispatch>();
+  const count = useSelector((state: any) => {
+    return state.searchAsync.value;
+  });
+
+  console.log(count);
+
+  const dummy_data = {
+    startDate: "2020-08-01",
+    endDate: "2020-09-30",
+    timeUnit: "month",
+    category: "50000000",
+    keyword: "정장",
+    device: "",
+    gender: "",
+    ages: ["10", "20"],
+  };
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
+        <button
+          onClick={() => {
+            dispatch(searchAsync(dummy_data));
+          }}
+        >
+          async fetch
+        </button>
+        <br />
       </header>
     </div>
   );
