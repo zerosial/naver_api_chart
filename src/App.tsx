@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./App.css";
 import { useSelector, useDispatch } from "react-redux";
 import { searchAsync } from "./features/redux/searchAsyncSlice";
