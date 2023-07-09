@@ -51,7 +51,6 @@ function App() {
         break;
     }
     setSearchData({ ...searchData, ...value });
-    console.log(searchData);
   }, [state, value]);
 
   const dispatch = useDispatch<AppDispatch>();
