@@ -1,4 +1,9 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import {
+  configureStore,
+  ThunkAction,
+  Action,
+  getDefaultMiddleware,
+} from "@reduxjs/toolkit";
 import searchAsyncSlice from "../features/redux/searchAsyncSlice";
 import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
@@ -20,6 +25,11 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // Store
 export const store = configureStore({
   reducer: persistedReducer,
+  middleware: getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: ["persist/PERSIST"],
+    },
+  }),
 });
 
 export type AppDispatch = typeof store.dispatch;
