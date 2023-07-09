@@ -13,11 +13,14 @@
     "@types/react-dom": "^18.2.6",
     "antd": "^5.6.4",
     "axios": "^1.4.0",
+    "d3": "^7.8.5",
+    "dayjs": "^1.11.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
     "react-redux": "^8.1.1",
     "react-scripts": "5.0.1",
+    "redux-persist": "^6.0.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -45,5 +48,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://your-backend-url.com"
+  "proxy": "https://openapi.naver.com/v1",
+  "devDependencies": {
+    "@types/d3": "^7.4.0"
+  }
 }
