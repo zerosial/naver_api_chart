@@ -13,6 +13,7 @@
     "@types/react-dom": "^18.2.6",
     "antd": "^5.6.4",
     "axios": "^1.4.0",
+    "d3": "^7.8.5",
     "dayjs": "^1.11.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -46,5 +47,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://openapi.naver.com/v1"
+  "proxy": "https://openapi.naver.com/v1",
+  "devDependencies": {
+    "@types/d3": "^7.4.0"
+  }
 }
