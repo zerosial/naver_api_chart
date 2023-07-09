@@ -10,7 +10,7 @@ const colors = [
   "#9467bd",
   "#8c564b",
 ];
-const color = (i: any) => colors[i % colors.length];
+const color = (i: number) => colors[i % colors.length];
 
 function LineChart({ data, width, height }: LineChartProps) {
   const ref = useRef<SVGSVGElement | null>(null);
@@ -50,7 +50,7 @@ function LineChart({ data, width, height }: LineChartProps) {
         d3
           .axisBottom(x)
           .ticks(10)
-          .tickFormat((d: any) => tickFormat(d))
+          .tickFormat((d) => tickFormat(d as Date))
           .tickSize(-innerHeight)
       )
       .attr("stroke-width", 0.5)
@@ -71,7 +71,7 @@ function LineChart({ data, width, height }: LineChartProps) {
         .attr("fill", "none")
         .attr("stroke", color(i))
         .attr("stroke-width", 1.5)
-        .attr("d", line as any);
+        .attr("d", line);
     });
 
     // legend
