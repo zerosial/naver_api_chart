@@ -2,7 +2,7 @@ import "./App.css";
 import { useSelector, useDispatch } from "react-redux";
 import { searchAsync } from "./features/redux/searchAsyncSlice";
 import { AppDispatch, RootState } from "./app/store";
-import { Space, DatePicker, Input, message, Button } from "antd";
+import { Space, DatePicker, Input, Button } from "antd";
 import dayjs from "dayjs";
 import { useState, useEffect } from "react";
 import type { RangePickerProps } from "antd/es/date-picker";
@@ -15,25 +15,28 @@ import {
 } from "./constants/itemList";
 import { PostDataProps } from "./features/types/Api";
 import MultiSelectBox from "./components/MultiSelectBox";
+import checkValidData from "./utils/checkValidData";
 
 function App() {
-  const dispatch = useDispatch<AppDispatch>();
   const [loadings, setLoadings] = useState<boolean>(false);
   const [searchData, setSearchData] = useState<PostDataProps>({
-    startDate: "2017-08-01",
-    endDate: "2017-09-30",
-    timeUnit: "month",
-    category: "50000000",
-    keyword: "정장",
+    startDate: "",
+    endDate: "",
+    timeUnit: "",
+    category: "",
+    keyword: "",
     device: "",
     gender: "",
-    ages: ["10", "20"],
+    ages: [],
   });
 
-  const state = useSelector((state: RootState) => {
-    return state.searchAsync.status;
-  });
+  const state = useSelector((state: RootState) => state.searchAsync.status);
+  const async = useSelector((state: RootState) => state.searchAsync.value);
 
+  const { RangePicker } = DatePicker;
+  const dateFormat = "YYYY-MM-DD";
+
+  // Redux Status Handling
   useEffect(() => {
     switch (state) {
       case "idle":
@@ -46,56 +49,37 @@ function App() {
       default:
         break;
     }
+    console.log(async);
   }, [state]);
 
-  const async = useSelector((state: RootState) => {
-    return state.searchAsync.value;
-  });
+  const dispatch = useDispatch<AppDispatch>();
 
-  console.log(async, state);
-
-  const { RangePicker } = DatePicker;
-  const dateFormat = "YYYY-MM-DD";
+  const handleDataChange =
+    (key: keyof PostDataProps) => (value: string | string[]) => {
+      setSearchData((prevData) => ({ ...prevData, [key]: value }));
+    };
 
   const handleDateChange = (
     value: RangePickerProps["value"],
     dateString: [string, string]
   ) => {
-    const startDate = dateString[0];
-    const endDate = dateString[1];
-    setSearchData({ ...searchData, startDate, endDate });
+    setSearchData((prevData) => ({
+      ...prevData,
+      startDate: dateString[0],
+      endDate: dateString[1],
+    }));
   };
 
-  const handleAgeChange = (value: string[]) => {
-    setSearchData({ ...searchData, ages: value });
-  };
-
-  const handleTimeUnitChange = (value: string) => {
-    setSearchData({ ...searchData, timeUnit: value });
-  };
-
-  const handleGenderChange = (value: string) => {
-    setSearchData({ ...searchData, gender: value });
-  };
-
-  const handleDeviceChange = (value: string) => {
-    setSearchData({ ...searchData, device: value });
-  };
-
-  const dummy_data = {
-    startDate: "2020-08-01",
-    endDate: "2020-09-30",
-    timeUnit: "month",
-    category: "50000000",
-    keyword: "정장",
-    device: "",
-    gender: "",
-    ages: ["10", "20"],
+  const handleSearchButton = () => {
+    if (checkValidData(searchData)) {
+      dispatch(searchAsync(searchData));
+    }
   };
 
   return (
     <div className="App">
       <header className="App-header">
+        <div>상단 첫줄은 필수값 입니다.</div>
         <Space direction="horizontal">
           <RangePicker
             defaultValue={[
@@ -104,36 +88,40 @@ function App() {
             ]}
             onChange={handleDateChange}
           />
-          <Input placeholder="카테고리" />
-          <Input placeholder="키워드" />
-        </Space>
-        <MultiSelectBox
-          title="age"
-          items={ageItems}
-          onChange={handleAgeChange}
-        />
-        <Space direction="horizontal">
+          <Input
+            placeholder="카테고리"
+            onChange={(e) => handleDataChange("category")(e.target.value)}
+          />
+          <Input
+            placeholder="키워드"
+            onChange={(e) => handleDataChange("keyword")(e.target.value)}
+          />
           <SelectBox
             title="timeUnit"
             items={timeUnitItems}
-            onChange={handleTimeUnitChange}
+            onChange={handleDataChange("timeUnit")}
+          />
+        </Space>
+        <Space direction="horizontal">
+          <MultiSelectBox
+            title="age"
+            items={ageItems}
+            onChange={handleDataChange("ages")}
           />
           <SelectBox
             title="gender"
             items={genderItems}
-            onChange={handleGenderChange}
+            onChange={handleDataChange("gender")}
           />
           <SelectBox
             title="device"
             items={deviceItems}
-            onChange={handleDeviceChange}
+            onChange={handleDataChange("device")}
           />
           <Button
             type="primary"
             loading={loadings}
-            onClick={() => {
-              dispatch(searchAsync(searchData));
-            }}
+            onClick={handleSearchButton}
           >
             조회하기
           </Button>

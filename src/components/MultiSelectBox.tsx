@@ -5,12 +5,12 @@ interface selectItem {
   value: string;
 }
 
-interface SelectBoxProps {
+interface MultiSelectBoxProps {
   title: string;
   items: selectItem[];
   onChange: (value: string[]) => void;
 }
-function MultiSelectBox({ title, items, onChange }: SelectBoxProps) {
+function MultiSelectBox({ title, items, onChange }: MultiSelectBoxProps) {
   return (
     <>
       <Space direction="vertical">
