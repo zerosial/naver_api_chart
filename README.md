@@ -1,3 +1,5 @@
+![chrome_ofkzk8mZdK](https://github.com/zerosial/naver_api_chart/assets/97251710/0525ce5f-90ca-4e68-93f4-f2f0e04448a8)
+
 # 제출자 정보
 
 - 지원자 성명 : 백승훈
@@ -18,6 +20,7 @@
 # 시작 하기
 
 npm i
+
 npm start
 
 # 필수 구현
