@@ -1,10 +1,10 @@
 import "./App.css";
 import { useSelector, useDispatch } from "react-redux";
 import { searchAsync } from "./features/redux/searchAsyncSlice";
-import { AppDispatch } from "./app/store";
-import { Space, DatePicker, Input, MenuProps, message } from "antd";
+import { AppDispatch, RootState } from "./app/store";
+import { Space, DatePicker, Input, message, Button } from "antd";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { RangePickerProps } from "antd/es/date-picker";
 import SelectBox from "./components/SelectBox";
 import {
@@ -14,18 +14,12 @@ import {
   timeUnitItems,
 } from "./constants/itemList";
 import { PostDataProps } from "./features/types/Api";
+import MultiSelectBox from "./components/MultiSelectBox";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
-  const async = useSelector((state: any) => {
-    return state.searchAsync.value;
-  });
-
-  const { RangePicker } = DatePicker;
-  const dateFormat = "YYYY-MM-DD";
-
-  const [dates, setDates] = useState<[string, string]>();
-  const [searchDate, setSearchDates] = useState<PostDataProps>({
+  const [loadings, setLoadings] = useState<boolean>(false);
+  const [searchData, setSearchData] = useState<PostDataProps>({
     startDate: "2017-08-01",
     endDate: "2017-09-30",
     timeUnit: "month",
@@ -36,32 +30,56 @@ function App() {
     ages: ["10", "20"],
   });
 
+  const state = useSelector((state: RootState) => {
+    return state.searchAsync.status;
+  });
+
+  useEffect(() => {
+    switch (state) {
+      case "idle":
+      case "failed":
+        setLoadings(false);
+        break;
+      case "loading":
+        setLoadings(true);
+        break;
+      default:
+        break;
+    }
+  }, [state]);
+
+  const async = useSelector((state: RootState) => {
+    return state.searchAsync.value;
+  });
+
+  console.log(async, state);
+
+  const { RangePicker } = DatePicker;
+  const dateFormat = "YYYY-MM-DD";
+
   const handleDateChange = (
     value: RangePickerProps["value"],
     dateString: [string, string]
   ) => {
-    console.log(dateString);
-    setDates(dateString);
+    const startDate = dateString[0];
+    const endDate = dateString[1];
+    setSearchData({ ...searchData, startDate, endDate });
   };
 
-  const handleAgeChange = (value: string) => {
-    console.log(value);
-    message.info(`Click on item ${value}`);
+  const handleAgeChange = (value: string[]) => {
+    setSearchData({ ...searchData, ages: value });
   };
 
   const handleTimeUnitChange = (value: string) => {
-    console.log(value);
-    message.info(`Click on item ${value}`);
+    setSearchData({ ...searchData, timeUnit: value });
   };
 
   const handleGenderChange = (value: string) => {
-    console.log(value);
-    message.info(`Click on item ${value}`);
+    setSearchData({ ...searchData, gender: value });
   };
 
   const handleDeviceChange = (value: string) => {
-    console.log(value);
-    message.info(`Click on item ${value}`);
+    setSearchData({ ...searchData, device: value });
   };
 
   const dummy_data = {
@@ -89,13 +107,17 @@ function App() {
           <Input placeholder="카테고리" />
           <Input placeholder="키워드" />
         </Space>
+        <MultiSelectBox
+          title="age"
+          items={ageItems}
+          onChange={handleAgeChange}
+        />
         <Space direction="horizontal">
           <SelectBox
             title="timeUnit"
             items={timeUnitItems}
             onChange={handleTimeUnitChange}
           />
-          <SelectBox title="age" items={ageItems} onChange={handleAgeChange} />
           <SelectBox
             title="gender"
             items={genderItems}
@@ -106,14 +128,16 @@ function App() {
             items={deviceItems}
             onChange={handleDeviceChange}
           />
+          <Button
+            type="primary"
+            loading={loadings}
+            onClick={() => {
+              dispatch(searchAsync(searchData));
+            }}
+          >
+            조회하기
+          </Button>
         </Space>
-        <button
-          onClick={() => {
-            dispatch(searchAsync(dummy_data));
-          }}
-        >
-          async fetch
-        </button>
         <br />
       </header>
     </div>
