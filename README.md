@@ -37,3 +37,18 @@ npm start
 - [x] Antd를 활용하여 화면을 꾸민다. (디자인은 자유)
 - [x] Redux-Persist를 활용하여 새로고침 시, 연령별 트렌드 조회의 파라미터가 유지되도록 구성한다.
 - [x] 상태관리는 Redux-thunk를 사용하였습니다.
+
+# .env 정의
+REACT_APP_CLIENT_ID = "id"
+REACT_APP_CLIENT_SECREAT = "Secreat"
+DANGEROUSLY_DISABLE_HOST_CHECK=true
+
+# CORS 에러
+처음에 Next를 사용하여 백엔드 api와 serverless를 연결할 생각이였습니다.
+redux가 next에 적합하지 않고 최적화에 시간이 오래걸려 간단하게 dev에서 활용가능하게 pakage.json의 proxy를 추가함으로 해결했습니다.
+
+pakage.json
+"proxy": "https://openapi.naver.com/v1",
+
+.env
+DANGEROUSLY_DISABLE_HOST_CHECK=true
