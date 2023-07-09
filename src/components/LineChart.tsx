@@ -9,10 +9,6 @@ const colors = [
   "#d62728",
   "#9467bd",
   "#8c564b",
-  "#e377c2",
-  "#7f7f7f",
-  "#bcbd22",
-  "#17becf",
 ];
 const color = (i: any) => colors[i % colors.length];
 
@@ -43,6 +39,7 @@ function LineChart({ data, width, height }: LineChartProps) {
       .range([innerHeight, 0]);
     const line = d3
       .line<DataPoint>()
+      .curve(d3.curveBasis)
       .x((d) => x(new Date(d.period)))
       .y((d) => y(d.ratio));
 
@@ -52,7 +49,7 @@ function LineChart({ data, width, height }: LineChartProps) {
       .call(
         d3
           .axisBottom(x)
-          .ticks(data.length)
+          .ticks(10)
           .tickFormat((d: any) => tickFormat(d))
           .tickSize(-innerHeight)
       )
