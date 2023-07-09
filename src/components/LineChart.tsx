@@ -65,6 +65,7 @@ function LineChart({ data, width, height }: LineChartProps) {
     const groups = d3.group(data, (d) => d.group);
 
     // draw lines
+    // eslint-disable-next-line array-callback-return
     Array.from(groups, ([group, values], i) => {
       g.append("path")
         .datum(values)
