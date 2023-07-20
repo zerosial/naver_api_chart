@@ -1,5 +1,5 @@
-![chrome_ofkzk8mZdK](https://github.com/zerosial/naver_api_chart/assets/97251710/0525ce5f-90ca-4e68-93f4-f2f0e04448a8)
 
+![chrome_MWF0Y0UOQW](https://github.com/zerosial/naver_api_chart/assets/97251710/004a8dd0-1ea6-4fb9-b64e-2862964a6b11)
 
 # 사용 기술
 
